@@ -3,6 +3,7 @@ FROM ${BASE_IMAGE}
 
 ENV TZ=Asia/Shanghai
 ENV XLSWRITER_VERSION 1.5.4
+LABEL "构建php-fpm运行环境"
 
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories \
     && apk update --no-cache && apk add --no-cache libzip-dev zip \
