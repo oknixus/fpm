@@ -1,7 +1,7 @@
 ARG BASE_IMAGE=php:8.2-fpm-alpine3.16
 FROM ${BASE_IMAGE}
 
-ARG XLSWRITER_VERSION 1.5.4
+ARG XLSWRITER_VERSION=1.5.4
 
 LABEL description="构建php-fpm运行环境"
 
