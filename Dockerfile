@@ -5,38 +5,35 @@ ARG XLSWRITER_VERSION 1.5.4
 
 LABEL description="构建php-fpm运行环境"
 
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories \
-    && apk update --no-cache && apk add --no-cache libzip-dev zip \
-    && apk add --no-cache --virtual .phpize-deps $PHPIZE_DEPS \
-    && apk add --no-cache autoconf gcc g++ make pkgconfig libtool nasm \
-    && apk add --no-cache libjpeg libjpeg-turbo libjpeg-turbo-dev \
-    && apk add --no-cache libpng-dev \
-    && apk add --no-cache libmcrypt-dev \
-    && apk add --no-cache freetype-dev \
-    && apk add --no-cache imagemagick \
-    && apk add --no-cache imagemagick-dev \
-    && apk add --no-cache php-dom \
-    && pecl install -o -f imagick \
-    && pecl install -o -f igbinary \
-    && pecl install -o -f redis \
-    && docker-php-ext-enable redis imagick igbinary \
-    && docker-php-ext-install bcmath \
-    && docker-php-ext-install zip  \
-    && docker-php-ext-install pcntl \
-    && docker-php-ext-install pdo_mysql \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd \
-    && ( \
-		curl -fsSL "https://pecl.php.net/get/xlswriter-${XLSWRITER_VERSION}.tgz" -o xlswriter.tgz \
-		&& mkdir -p /tmp/xlswriter \
-		&& tar -xf xlswriter.tgz -C /tmp/xlswriter --strip-components=1 \
-		&& rm xlswriter.tgz \
-		&& cd /tmp/xlswriter \
-		&& phpize && ./configure --enable-reader && make && make install \
-        && echo 'extension=xlswriter'>/usr/local/etc/php/conf.d/docker-php-ext-xlswriter.ini \
-	) \
-    && rm -rf /usr/src/* \
-    && rm -rf /tmp/*
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories 
+RUN apk update --no-cache && apk add --no-cache libzip-dev zip 
+RUN apk add --no-cache --virtual .phpize-deps $PHPIZE_DEPS 
+RUN apk add --no-cache autoconf gcc g++ make pkgconfig libtool nasm 
+RUN apk add --no-cache libjpeg libjpeg-turbo libjpeg-turbo-dev 
+RUN apk add --no-cache libpng-dev 
+RUN apk add --no-cache libmcrypt-dev 
+RUN apk add --no-cache freetype-dev 
+RUN apk add --no-cache imagemagick 
+RUN apk add --no-cache imagemagick-dev 
+RUN apk add --no-cache php-dom 
+RUN pecl install -o -f imagick 
+RUN pecl install -o -f igbinary 
+RUN pecl install -o -f redis 
+RUN docker-php-ext-enable redis imagick igbinary 
+RUN docker-php-ext-install bcmath 
+RUN docker-php-ext-install zip  
+RUN docker-php-ext-install pcntl 
+RUN docker-php-ext-install pdo_mysql 
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg 
+RUN docker-php-ext-install gd 
+RUN curl -fsSL "https://pecl.php.net/get/xlswriter-${XLSWRITER_VERSION}.tgz" -o xlswriter.tgz \
+    && mkdir -p /tmp/xlswriter \
+    && tar -xf xlswriter.tgz -C /tmp/xlswriter --strip-components=1 \
+    && rm xlswriter.tgz \
+    && cd /tmp/xlswriter \
+    && phpize && ./configure --enable-reader && make && make install \
+    && echo 'extension=xlswriter'>/usr/local/etc/php/conf.d/docker-php-ext-xlswriter.ini \
+RUN rm -rf /usr/src/* && rm -rf /tmp/*
 
 
 FROM ${BASE_IMAGE}
@@ -55,5 +52,4 @@ COPY --from=0 /usr/lib/libMagickWand-7.Q16HDRI.so.10.0.0 /usr/lib/libMagick++-7.
 COPY --from=0 /usr/lib/pkgconfig/MagickCore.pc /usr/lib/pkgconfig/MagickWand-7.Q16HDRI.pc /usr/lib/pkgconfig/ImageMagick-7.Q16HDRI.pc /usr/lib/pkgconfig/ImageMagick.pc /usr/lib/pkgconfig/MagickWand.pc /usr/lib/pkgconfig/Magick++-7.Q16HDRI.pc /usr/lib/pkgconfig/Magick++.pc /usr/lib/pkgconfig/MagickCore-7.Q16HDRI.pc /usr/lib/pkgconfig/
 COPY --from=0 /usr/share/ImageMagick-7 /usr/share/ImageMagick-7/
 COPY --from=0 /usr/bin/magick /usr/bin/magick-script /usr/bin/MagickWand-config /usr/bin/MagickCore-config /usr/bin/Magick++-config /usr/bin/
-RUN chmod -R 755 /usr/local/lib/php/extensions/no-debug-non-zts-20220829 \
-    && rm -rf /usr/src/* && rm -rf /tmp/*
+RUN chmod -R 755 /usr/local/lib/php/extensions/no-debug-non-zts-20220829 && rm -rf /usr/src/* && rm -rf /tmp/*
