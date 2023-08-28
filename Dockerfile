@@ -7,6 +7,7 @@ LABEL description="构建php-fpm运行环境"
 
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories 
 RUN apk update --no-cache && apk add --no-cache libzip-dev zip 
+RUN apk add --no-cache tzdata
 RUN apk add --no-cache --virtual .phpize-deps $PHPIZE_DEPS 
 RUN apk add --no-cache autoconf gcc g++ make pkgconfig libtool nasm 
 RUN apk add --no-cache libjpeg libjpeg-turbo libjpeg-turbo-dev 
@@ -52,4 +53,5 @@ COPY --from=0 /usr/lib/libMagickWand-7.Q16HDRI.so.10.0.0 /usr/lib/libMagick++-7.
 COPY --from=0 /usr/lib/pkgconfig/MagickCore.pc /usr/lib/pkgconfig/MagickWand-7.Q16HDRI.pc /usr/lib/pkgconfig/ImageMagick-7.Q16HDRI.pc /usr/lib/pkgconfig/ImageMagick.pc /usr/lib/pkgconfig/MagickWand.pc /usr/lib/pkgconfig/Magick++-7.Q16HDRI.pc /usr/lib/pkgconfig/Magick++.pc /usr/lib/pkgconfig/MagickCore-7.Q16HDRI.pc /usr/lib/pkgconfig/
 COPY --from=0 /usr/share/ImageMagick-7 /usr/share/ImageMagick-7/
 COPY --from=0 /usr/bin/magick /usr/bin/magick-script /usr/bin/MagickWand-config /usr/bin/MagickCore-config /usr/bin/Magick++-config /usr/bin/
-RUN chmod -R 755 /usr/local/lib/php/extensions/no-debug-non-zts-20220829 && rm -rf /usr/src/* && rm -rf /tmp/*
+COPY --from=0 /usr/share/zoneinfo/Asia/Shanghai /usr/share/zoneinfo/Asia/Shanghai
+RUN echo "Asia/Shanghai">/etc/timezone && chmod -R 755 /usr/local/lib/php/extensions/no-debug-non-zts-20220829 && rm -rf /usr/src/* && rm -rf /tmp/*
