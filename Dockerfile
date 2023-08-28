@@ -1,8 +1,8 @@
 ARG BASE_IMAGE=php:8.2-fpm-alpine3.16
 FROM ${BASE_IMAGE}
 
-ENV TZ=Asia/Shanghai
-ENV XLSWRITER_VERSION 1.5.4
+ARG XLSWRITER_VERSION 1.5.4
+
 LABEL description="构建php-fpm运行环境"
 
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories \
@@ -40,6 +40,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositorie
 
 
 FROM ${BASE_IMAGE}
+ENV TZ=Asia/Shanghai
 COPY --from=0 /usr/local/lib/php/extensions/no-debug-non-zts-20220829 /usr/local/lib/php/extensions/no-debug-non-zts-20220829
 COPY --from=0 /usr/local/etc/php/conf.d /usr/local/etc/php/conf.d
 COPY --from=0 /usr/lib/libstdc++.so.6 /usr/lib/libzip.so.5 /usr/lib/libbz2.so.1 /usr/lib/libzstd.so.1 /usr/lib/libpng16.so.16 /usr/lib/libjpeg.so.8 /usr/lib/libfreetype.so.6 /usr/lib/libgomp.so.1 /usr/lib/libMagickWand-7.Q16HDRI.so.10 /usr/lib/libMagickCore-7.Q16HDRI.so.10 /usr/lib/libX11.so.6 /usr/lib/liblcms2.so.2 /usr/lib/libfontconfig.so.1 /usr/lib/libXext.so.6 /usr/lib/libltdl.so.7 /usr/lib/libxcb.so.1 /usr/lib/libexpat.so.1 /usr/lib/libXau.so.6 /usr/lib/libXdmcp.so.6 /usr/lib/
