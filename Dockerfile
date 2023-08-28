@@ -33,7 +33,7 @@ RUN curl -fsSL "https://pecl.php.net/get/xlswriter-${XLSWRITER_VERSION}.tgz" -o 
     && rm xlswriter.tgz \
     && cd /tmp/xlswriter \
     && phpize && ./configure --enable-reader && make && make install \
-    && echo 'extension=xlswriter'>/usr/local/etc/php/conf.d/docker-php-ext-xlswriter.ini \
+    && echo 'extension=xlswriter'>/usr/local/etc/php/conf.d/docker-php-ext-xlswriter.ini 
 RUN rm -rf /usr/src/* && rm -rf /tmp/*
 
 
@@ -54,4 +54,5 @@ COPY --from=0 /usr/lib/pkgconfig/MagickCore.pc /usr/lib/pkgconfig/MagickWand-7.Q
 COPY --from=0 /usr/share/ImageMagick-7 /usr/share/ImageMagick-7/
 COPY --from=0 /usr/bin/magick /usr/bin/magick-script /usr/bin/MagickWand-config /usr/bin/MagickCore-config /usr/bin/Magick++-config /usr/bin/
 COPY --from=0 /usr/share/zoneinfo/Asia/Shanghai /usr/share/zoneinfo/Asia/Shanghai
+
 RUN echo "Asia/Shanghai">/etc/timezone && chmod -R 755 /usr/local/lib/php/extensions/no-debug-non-zts-20220829 && rm -rf /usr/src/* && rm -rf /tmp/*
