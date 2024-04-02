@@ -1,7 +1,7 @@
 ARG BASE_IMAGE=php:8.2-fpm-alpine3.16
 FROM ${BASE_IMAGE}
 
-ARG XLSWRITER_VERSION=1.5.4
+ARG XLSWRITER_VERSION=1.5.5
 
 LABEL description="构建php-fpm运行环境"
 
@@ -25,6 +25,7 @@ RUN docker-php-ext-install bcmath
 RUN docker-php-ext-install zip  
 RUN docker-php-ext-install pcntl 
 RUN docker-php-ext-install pdo_mysql 
+RUN docker-php-ext-install opcache 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg 
 RUN docker-php-ext-install gd 
 RUN curl -fsSL "https://pecl.php.net/get/xlswriter-${XLSWRITER_VERSION}.tgz" -o xlswriter.tgz \
