@@ -14,6 +14,9 @@ RUN apk add --no-cache libjpeg libjpeg-turbo libjpeg-turbo-dev
 RUN apk add --no-cache libpng-dev 
 RUN apk add --no-cache libmcrypt-dev 
 RUN apk add --no-cache freetype-dev 
+RUN apk add --no-cache fftw
+RUN apk add --no-cache libbsd
+RUN apk add --no-cache libmd
 RUN apk add --no-cache imagemagick 
 RUN apk add --no-cache imagemagick-dev 
 RUN apk add --no-cache php-dom 
@@ -42,7 +45,7 @@ FROM ${BASE_IMAGE}
 ENV TZ=Asia/Shanghai
 COPY --from=0 /usr/local/lib/php/extensions/no-debug-non-zts-20220829 /usr/local/lib/php/extensions/no-debug-non-zts-20220829
 COPY --from=0 /usr/local/etc/php/conf.d /usr/local/etc/php/conf.d
-COPY --from=0 /usr/lib/libstdc++.so.6 /usr/lib/libzip.so.5 /usr/lib/libbz2.so.1 /usr/lib/libzstd.so.1 /usr/lib/libpng16.so.16 /usr/lib/libjpeg.so.8 /usr/lib/libfreetype.so.6 /usr/lib/libgomp.so.1 /usr/lib/libMagickWand-7.Q16HDRI.so.10 /usr/lib/libMagickCore-7.Q16HDRI.so.10 /usr/lib/libX11.so.6 /usr/lib/liblcms2.so.2 /usr/lib/libfontconfig.so.1 /usr/lib/libXext.so.6 /usr/lib/libltdl.so.7 /usr/lib/libxcb.so.1 /usr/lib/libexpat.so.1 /usr/lib/libXau.so.6 /usr/lib/libXdmcp.so.6 /usr/lib/
+COPY --from=0 /usr/lib/libstdc++.so.6 /usr/lib/libzip.so.5 /usr/lib/libbz2.so.1 /usr/lib/libzstd.so.1 /usr/lib/libpng16.so.16 /usr/lib/libjpeg.so.8 /usr/lib/libfreetype.so.6 /usr/lib/libgomp.so.1 /usr/lib/libMagickWand-7.Q16HDRI.so.10 /usr/lib/libMagickCore-7.Q16HDRI.so.10 /usr/lib/libX11.so.6 /usr/lib/liblcms2.so.2 /usr/lib/libfontconfig.so.1 /usr/lib/libXext.so.6 /usr/lib/libltdl.so.7 /usr/lib/libxcb.so.1 /usr/lib/libexpat.so.1 /usr/lib/libXau.so.6 /usr/lib/libXdmcp.so.6 /usr/lib/libfftw3.so.3 /usr/lib/libbsd.so.0 /usr/lib/libmd.so.0 /usr/lib
 COPY --from=0 /usr/lib/php82/modules /usr/lib/php82/modules
 COPY --from=0 /etc/php82/conf.d /etc/php82/conf.d
 COPY --from=0 /usr/local/include/php/ext /usr/local/include/php/ext
